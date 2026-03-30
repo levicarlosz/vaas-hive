@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Keynote | Premium Deck</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ---------- Design Tokens ---------- */
+        :root {
+            --bg-0: #000000;
+            --bg-1: #0B0F0F;
+            --bg-2: #06150F;
+            --bg-2-60: rgba(6, 21, 15, 0.6);
+            --bg-overlay-soft: rgba(18, 81, 10, 0.04);
+
+            --neon-1: #00FF66;
+            --neon-2: #00FF66;
+            --neon-3: #00FF66;
+            --neon-4: #00FF66;
+
+            --text-1: #FFFFFF;
+            --text-2: #CFCFCF;
+            --line-soft: rgba(191, 191, 191, 0.28);
+            --line-strong: rgba(191, 191, 191, 0.6);
+
+            --accent-strong: rgba(0, 255, 102, 0.72);
+            --accent-mid: rgba(0, 255, 102, 0.38);
+            --accent-soft: rgba(0, 255, 102, 0.16);
+
+            --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+            --font-body: "Inter", "Segoe UI", sans-serif;
+
+            --space-1: clamp(0.5rem, 0.6vw, 0.8rem);
+            --space-2: clamp(0.9rem, 1vw, 1.2rem);
+            --space-3: clamp(1.2rem, 1.4vw, 1.8rem);
+            --space-4: clamp(1.8rem, 2vw, 2.7rem);
+            --space-5: clamp(2.8rem, 3vw, 4rem);
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 999px;
+            --max-content: 1400px;
+            --motion-fast: 220ms ease;
+
+            --glow-soft: 0 0 32px rgba(0, 255, 102, 0.14);
+            --glow-edge: inset 0 0 0 1px rgba(118, 213, 106, 0.2);
+
+            --surface-radius: 10px;
+            --surface-pad-y: 0.72rem;
+            --surface-pad-x: 0.9rem;
+            --surface-border: 1px solid rgba(0, 255, 102, 0.26);
+            --surface-bg: rgba(0, 255, 102, 0.08);
+            --surface-fs: clamp(0.95rem, 1.02vw, 1.08rem);
+            --surface-lh: 1.3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-0);
+            color: var(--text-1);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--neon-1);
+            outline-offset: 3px;
+        }
+
+        /* ---------- Deck shell 16:9 ---------- */
+        .deck-shell {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            height: min(56.25vw, 100vh);
+            overflow: hidden;
+            background:
+                radial-gradient(95% 85% at 92% 8%, rgba(0, 255, 102, 0.13) 0%, transparent 55%),
+                linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 70%, #040404 100%);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ---------- Background layers ---------- */
+        .layer-grid,
+        .layer-noise,
+        .layer-vignette,
+        .layer-matrix {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .layer-grid {
+            background:
+                repeating-linear-gradient(90deg, transparent 0 52px, rgba(191, 191, 191, 0.05) 52px 53px),
+                repeating-linear-gradient(180deg, transparent 0 52px, rgba(191, 191, 191, 0.035) 52px 53px);
+            opacity: 0.2;
+        }
+
+        .layer-noise {
+            background-image: radial-gradient(rgba(241, 248, 241, 0.08) 0.45px, transparent 0.45px);
+            background-size: 4px 4px;
+            opacity: 0.08;
+            mix-blend-mode: soft-light;
+        }
+
+        .layer-vignette {
+            background: radial-gradient(circle at 50% 40%, transparent 45%, rgba(0, 0, 0, 0.62) 100%);
+        }
+
+        .layer-matrix {
+            opacity: 0.16;
+            mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
+
+        /* ---------- Global utilities ---------- */
+        .branding {
+            position: absolute;
+            top: var(--space-3);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            font-family: var(--font-display);
+            font-size: clamp(0.62rem, 0.72vw, 0.85rem);
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--line-strong);
+        }
+
+        .deck-progress {
+            position: absolute;
+            right: var(--space-5);
+            bottom: var(--space-4);
+            z-index: 40;
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
+            color: var(--line-strong);
+            font-family: var(--font-display);
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .top-actions {
+            position: absolute;
+            top: var(--space-3);
+            right: var(--space-5);
+            z-index: 45;
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            border: 1px solid rgba(118, 213, 106, 0.34);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: rgba(6, 21, 15, 0.68);
+            backdrop-filter: blur(3px);
+        }
+
+        .lang-btn {
+            border: 0;
+            background: transparent;
+            color: var(--text-2);
+            padding: 0.42rem 0.78rem;
+            cursor: pointer;
+            font: 600 clamp(0.7rem, 0.78vw, 0.88rem) / 1 var(--font-display);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: background var(--motion-fast), color var(--motion-fast);
+        }
+
+        .lang-btn.active {
+            background: var(--neon-1);
+            color: #000;
+        }
+
+        .btn-primary {
+            appearance: none;
+            border: 1px solid rgba(0, 255, 102, 0.5);
+            background: linear-gradient(180deg, rgba(0, 255, 102, 0.16), rgba(0, 255, 102, 0.08));
+            color: var(--text-1);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            padding: 0.54rem 1.05rem;
+            font: 600 clamp(0.72rem, 0.86vw, 0.94rem) / 1 var(--font-display);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform var(--motion-fast), box-shadow var(--motion-fast), border-color var(--motion-fast);
+            box-shadow: 0 0 0 rgba(0, 255, 102, 0);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            border-color: rgba(0, 255, 102, 0.8);
+            box-shadow: 0 8px 22px rgba(0, 255, 102, 0.18);
+        }
+
+        .deck-nav {
+            position: absolute;
+            left: 50%;
+            bottom: var(--space-4);
+            transform: translateX(-50%);
+            z-index: 45;
+            display: inline-flex;
+            gap: 0.55rem;
+            background: rgba(6, 21, 15, 0.62);
+            padding: 0.34rem;
+            border: 1px solid rgba(118, 213, 106, 0.2);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(3px);
+        }
+
+        .nav-btn {
+            border: 1px solid rgba(118, 213, 106, 0.28);
+            background: transparent;
+            color: var(--text-1);
+            border-radius: var(--radius-lg);
+            min-width: 2.1rem;
+            min-height: 2.1rem;
+            cursor: pointer;
+            font: 700 0.95rem/1 var(--font-display);
+            transition: border-color var(--motion-fast), background var(--motion-fast);
+        }
+
+        .nav-btn:hover {
+            border-color: rgba(0, 255, 102, 0.75);
+            background: rgba(0, 255, 102, 0.08);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            border-color: rgba(118, 213, 106, 0.16);
+        }
+
+        .tag-highlight {
+            display: inline-block;
+            background: var(--neon-1);
+            color: #000000;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(0.68rem, 0.9vw, 1.02rem);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 0.62em 1.1em;
+            border-radius: 2px;
+            width: fit-content;
+        }
+
+        .kicker {
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            color: var(--line-strong);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-family: var(--font-display);
+        }
+
+        .headline {
+            font-family: var(--font-display);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.012em;
+            font-size: clamp(2.2rem, 4.7vw, 5.2rem);
+            max-width: 15ch;
+            text-wrap: balance;
+        }
+
+        .headline .accent {
+            color: var(--neon-1);
+            font-weight: 700;
+            text-shadow: 0 0 18px rgba(0, 255, 102, 0.25);
+        }
+
+        .subhead {
+            color: var(--text-2);
+            font-size: clamp(1rem, 1.35vw, 1.35rem);
+            line-height: 1.62;
+            max-width: 62ch;
+        }
+
+        .metric {
+            font-family: var(--font-display);
+            color: var(--neon-1);
+            font-weight: 700;
+            font-size: clamp(3.1rem, 8.6vw, 8.2rem);
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            text-shadow: 0 0 18px rgba(0, 255, 102, 0.14);
+        }
+
+        .divider {
+            width: clamp(120px, 14vw, 260px);
+            height: 1px;
+            background: linear-gradient(90deg, rgba(191, 191, 191, 0.6) 0%, rgba(191, 191, 191, 0.06) 100%);
+        }
+
+        .content-card {
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            background: linear-gradient(160deg, rgba(6, 21, 15, 0.85), rgba(3, 5, 5, 0.9));
+            box-shadow: var(--glow-edge), 0 10px 30px rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--accent-soft);
+            backdrop-filter: blur(2px);
+        }
+
+        .content-card h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.4vw, 1.45rem);
+            margin-bottom: 0.5em;
+        }
+
+        .content-card p {
+            color: var(--text-2);
+            font-size: clamp(0.88rem, 1.02vw, 1.05rem);
+            line-height: 1.6;
+        }
+
+        .point-row {
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            padding: var(--surface-pad-y) var(--surface-pad-x);
+            border-radius: var(--surface-radius);
+            border: var(--surface-border);
+            background: var(--surface-bg);
+            color: var(--text-1);
+            font-size: var(--surface-fs);
+            line-height: var(--surface-lh);
+        }
+
+        .point-row::before {
+            content: "";
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: var(--neon-1);
+            box-shadow: 0 0 0 4px rgba(0, 255, 102, 0.14);
+            flex: 0 0 auto;
+        }
+
+        .content-card.list-card {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            display: grid;
+            gap: 0.62rem;
+        }
+
+        .content-card.list-card p {
+            margin: 0;
+        }
+
+        .list-trail {
+            color: var(--line-strong);
+            font-size: clamp(0.92rem, 1vw, 1.04rem);
+            padding-left: 0.25rem;
+        }
+
+        .reason-stack {
+            display: grid;
+            gap: 0.72rem;
+            width: min(100%, 900px);
+        }
+
+        .reason-line {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            padding: var(--surface-pad-y) var(--surface-pad-x);
+            border-radius: var(--surface-radius);
+            border: 1px solid rgba(0, 255, 102, 0.24);
+            border-left-width: 3px;
+            background: rgba(0, 255, 102, 0.09);
+            color: var(--text-1);
+            font-size: var(--surface-fs);
+            line-height: var(--surface-lh);
+            width: 100%;
+            white-space: normal;
+        }
+
+        .slide[data-slide="13"] .reason-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.72rem;
+            width: min(100%, 980px);
+        }
+
+        .slide[data-slide="13"] .reason-line {
+            width: fit-content;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        .reason-prefix {
+            color: var(--neon-1);
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            padding: 0.25rem 0.45rem;
+            border: 1px solid rgba(0, 255, 102, 0.42);
+            border-radius: 6px;
+            background: rgba(0, 255, 102, 0.1);
+            flex: 0 0 auto;
+        }
+
+        .reason-line.is-yellow {
+            border-color: rgba(240, 190, 23, 0.55);
+            background: rgba(240, 190, 23, 0.16);
+        }
+
+        .reason-line.is-yellow .reason-prefix {
+            color: #f0be17;
+            border-color: rgba(240, 190, 23, 0.55);
+            background: rgba(240, 190, 23, 0.14);
+        }
+
+        .reason-line.is-purple {
+            border-color: rgba(177, 102, 211, 0.55);
+            background: rgba(177, 102, 211, 0.14);
+        }
+
+        .reason-line.is-purple .reason-prefix {
+            color: #b166d3;
+            border-color: rgba(177, 102, 211, 0.55);
+            background: rgba(177, 102, 211, 0.14);
+        }
+
+        .reason-line.is-cyan {
+            border-color: rgba(22, 177, 208, 0.58);
+            background: rgba(22, 177, 208, 0.14);
+        }
+
+        .reason-line.is-cyan .reason-prefix {
+            color: #16b1d0;
+            border-color: rgba(22, 177, 208, 0.58);
+            background: rgba(22, 177, 208, 0.14);
+        }
+
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-auto-rows: minmax(38px, auto);
+            gap: 0.62rem;
+            width: min(100%, 860px);
+            margin-inline: auto;
+            align-content: start;
+        }
+
+        .symptom-item {
+            margin: 0;
+            padding: var(--surface-pad-y) var(--surface-pad-x);
+            border-radius: var(--surface-radius);
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            border-left: 3px solid var(--neon-1);
+            background: rgba(0, 255, 102, 0.05);
+            color: var(--text-1);
+            font-size: var(--surface-fs);
+            line-height: var(--surface-lh);
+            text-align: left;
+            width: fit-content;
+            max-width: 100%;
+            justify-self: start;
+        }
+
+        .symptom-grid .symptom-item:nth-child(1) { grid-column: 1 / span 7; grid-row: 1; }
+        .symptom-grid .symptom-item:nth-child(2) { grid-column: 4 / span 6; grid-row: 2; }
+        .symptom-grid .symptom-item:nth-child(3) { grid-column: 2 / span 7; grid-row: 3; }
+
+        .speaker-card {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--space-2);
+            align-items: center;
+            width: min(480px, 100%);
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            background: var(--bg-2-60);
+            box-shadow: var(--glow-edge);
+            border: 1px solid rgba(118, 213, 106, 0.12);
+        }
+
+        .speaker-media {
+            width: clamp(84px, 9vw, 160px);
+            aspect-ratio: 5 / 6;
+            clip-path: polygon(50% 0%, 96% 22%, 96% 78%, 50% 100%, 4% 78%, 4% 22%);
+            overflow: hidden;
+            background: var(--neon-1);
+            box-shadow: 0 0 0 1px rgba(118, 213, 106, 0.3), 0 0 26px rgba(0, 255, 102, 0.15);
+        }
+
+        .duotone {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) contrast(1.25) brightness(0.88);
+            mix-blend-mode: multiply;
+        }
+
+        .speaker-name {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(1rem, 1.3vw, 1.4rem);
+            color: var(--text-1);
+            letter-spacing: 0.01em;
+        }
+
+        .speaker-role {
+            margin-top: 0.35em;
+            color: var(--text-2);
+            font-size: clamp(0.85rem, 0.95vw, 1rem);
+        }
+
+        .status-row {
+            display: flex;
+            gap: var(--space-2);
+            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: 0.5em 0.95em;
+            font-size: clamp(0.7rem, 0.82vw, 0.92rem);
+            letter-spacing: 0.02em;
+            font-family: var(--font-display);
+            text-transform: none;
+            color: var(--text-1);
+            background: rgba(59, 59, 59, 0.3);
+        }
+
+        .is-cyan {
+            border-color: var(--accent-mid);
+            color: var(--text-1);
+            background: rgba(0, 255, 102, 0.12);
+        }
+
+        .is-red {
+            border-color: var(--accent-mid);
+            color: var(--text-1);
+            background: rgba(0, 255, 102, 0.09);
+        }
+
+        .is-purple {
+            border-color: var(--accent-mid);
+            color: var(--text-1);
+            background: rgba(0, 255, 102, 0.06);
+        }
+
+        /* ---------- Slide structure ---------- */
+        .slides {
+            position: absolute;
+            inset: 0;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            align-content: center;
+            padding: clamp(1.8rem, 3.6vw, 4.2rem) clamp(1.8rem, 6vw, 7.2rem);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(14px);
+            transition: opacity 420ms ease, transform 420ms ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .slide-inner {
+            width: min(100%, var(--max-content));
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        .slide.single-col {
+            align-content: center;
+        }
+
+        .slide.single-col .slide-inner {
+            grid-template-columns: minmax(0, 920px);
+            justify-content: center;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .slide.single-col .tag-highlight,
+        .slide.single-col .kicker,
+        .slide.single-col .divider {
+            justify-self: center;
+        }
+
+        .slide.single-col .headline,
+        .slide.single-col .subhead {
+            margin-inline: auto;
+            max-width: 24ch;
+        }
+
+        /* Layout base 1: Hero */
+        .layout-hero .slide-inner {
+            grid-template-columns: 1.12fr 0.88fr;
+            align-items: end;
+        }
+
+        .hero-visual {
+            justify-self: end;
+            width: min(39vw, 620px);
+            aspect-ratio: 4 / 5;
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--glow-edge), var(--glow-soft);
+        }
+
+        .hero-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(0, 0, 0, 0.58) 85%);
+        }
+
+        /* Layout base 2: Number highlight */
+        .layout-metric .slide-inner {
+            grid-template-columns: 1.08fr 0.92fr;
+            align-items: end;
+        }
+
+        .cards-stack {
+            display: grid;
+            gap: var(--space-2);
+        }
+
+        /* Layout base 3: Media + text */
+        .layout-media .slide-inner {
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+        }
+
+        .media-panel {
+            justify-self: end;
+            width: min(34vw, 520px);
+            display: grid;
+            gap: var(--space-2);
+        }
+
+        .media-block {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background: var(--neon-1);
+            box-shadow: var(--glow-edge), var(--glow-soft);
+            position: relative;
+        }
+
+        .media-block::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0) 46%);
+        }
+
+        .print-slide .slide-inner {
+            grid-template-columns: 1fr;
+            place-items: center;
+            align-content: center;
+            gap: 0;
+            height: 100%;
+        }
+
+        .print-figure {
+            width: clamp(160px, 18vw, 300px);
+
+            overflow: hidden;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+        }
+
+        .print-figure img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        .evidence-figure {
+            width: min(100%, 780px);
+            display: flex;
+            justify-content: center;
+            margin-top: var(--space-2);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            background: rgba(6, 21, 15, 0.5);
+        }
+
+        .evidence-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .evidence-caption {
+            font-size: clamp(0.74rem, 0.84vw, 0.9rem);
+            color: var(--line-strong);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-top: 0.45rem;
+        }
+
+        .insight-grid {
+            display: grid;
+            gap: 0.7rem;
+            width: min(100%, 980px);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .insight-grid.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .insight-grid.four {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .story-header {
+            display: grid;
+            gap: var(--space-3);
+        }
+
+        .story-note {
+            width: min(100%, 980px);
+            color: var(--line-strong);
+            font-size: clamp(0.88rem, 0.98vw, 1rem);
+            letter-spacing: 0.02em;
+            text-transform: none;
+        }
+
+        .insight-pill {
+            padding: var(--surface-pad-y) var(--surface-pad-x);
+            border-radius: var(--surface-radius);
+            border: var(--surface-border);
+            background: var(--surface-bg);
+            color: var(--text-1);
+            font-size: var(--surface-fs);
+            line-height: var(--surface-lh);
+        }
+
+        .insight-pill strong {
+            color: var(--neon-1);
+        }
+
+        .flow-chain {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            width: min(100%, 980px);
+        }
+
+        .flow-chain.centered {
+            justify-content: center;
+        }
+
+        .flow-node {
+            padding: var(--surface-pad-y) var(--surface-pad-x);
+            border: var(--surface-border);
+            border-radius: var(--surface-radius);
+            background: var(--surface-bg);
+            width: fit-content;
+            max-width: 100%;
+            font-size: var(--surface-fs);
+            line-height: var(--surface-lh);
+        }
+
+        .flow-arrow {
+            color: var(--neon-1);
+            font-family: var(--font-display);
+            font-weight: 700;
+            opacity: 0.82;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: var(--space-3);
+            width: min(100%, 1240px);
+            align-items: start;
+        }
+
+        .case-copy {
+            grid-column: 1 / span 5;
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .case-proof {
+            grid-column: 7 / span 6;
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .case-subhead {
+            color: var(--text-2);
+            font-size: clamp(0.95rem, 1.05vw, 1.12rem);
+            line-height: 1.35;
+            max-width: 50ch;
+        }
+
+        .case-impact {
+            display: inline-flex;
+            width: fit-content;
+            border: 1px solid rgba(0, 255, 102, 0.32);
+            border-radius: 999px;
+            padding: 0.42rem 0.82rem;
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--text-1);
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 0.92vw, 0.95rem);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .case-lesson {
+            color: var(--line-strong);
+            font-size: clamp(0.9rem, 1vw, 1.04rem);
+            line-height: 1.35;
+            max-width: 56ch;
+        }
+
+        .case-proof-frame {
+            min-height: 300px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(0, 255, 102, 0.22);
+            background: linear-gradient(160deg, rgba(6, 21, 15, 0.88), rgba(2, 3, 3, 0.96));
+            box-shadow: var(--glow-edge), 0 16px 32px rgba(0, 0, 0, 0.32);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .case-proof-frame img {
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .case-proof-frame p {
+            color: var(--text-2);
+            font-size: clamp(0.9rem, 1vw, 1.04rem);
+            line-height: 1.35;
+            max-width: 36ch;
+        }
+
+        .case-caption {
+            font-size: clamp(0.74rem, 0.84vw, 0.9rem);
+            color: var(--line-strong);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .case-source {
+            justify-self: end;
+            font-size: clamp(0.72rem, 0.8vw, 0.86rem);
+            color: var(--line-soft);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .slide[data-slide="24"] .flow-chain {
+            gap: 0.9rem;
+        }
+
+        .slide[data-slide="24"] .flow-node {
+            padding: 0.9rem 1.1rem;
+            border-width: 2px;
+            border-radius: 12px;
+            background: rgba(0, 255, 102, 0.14);
+            font-size: clamp(1.04rem, 1.3vw, 1.34rem);
+            line-height: 1.22;
+        }
+
+        .slide[data-slide="24"] .flow-arrow {
+            font-size: clamp(1.4rem, 2vw, 2rem);
+            opacity: 1;
+            text-shadow: 0 0 14px rgba(0, 255, 102, 0.24);
+        }
+
+        .tiny-caption {
+            font-family: var(--font-display);
+            font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--line-strong);
+        }
+
+        .timeline-slide.single-col .slide-inner {
+            grid-template-columns: minmax(0, 1220px);
+        }
+
+        .timeline-slide.single-col .headline {
+            max-width: 34ch;
+        }
+
+        .timeline-slide .timeline-horizontal {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(220px, 1fr));
+            gap: var(--space-2);
+            align-items: start;
+            width: 100%;
+            padding: var(--space-2) 0 var(--space-1);
+            overflow-x: auto;
+            scrollbar-width: thin;
+            padding-left: 2rem;
+        }
+
+        .timeline-slide .timeline-horizontal::before {
+            content: "";
+            position: absolute;
+            top: 1.62rem;
+            left: 2%;
+            right: 2%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 255, 102, 0.2), rgba(0, 255, 102, 0.65), rgba(0, 255, 102, 0.2));
+            pointer-events: none;
+        }
+
+        .timeline-slide .timeline-horizontal::after {
+            display: none;
+        }
+
+        .timeline-slide .timeline-item {
+            position: relative;
+            min-width: 220px;
+            margin-top: -0.95rem;
+            padding-top: 1.15rem;
+            text-align: left;
+        }
+
+        .timeline-slide .timeline-item::before {
+            content: "";
+            position: absolute;
+            top: 1.4rem;
+            left: 0;
+            width: 0.68rem;
+            height: 0.68rem;
+            border-radius: 50%;
+            background: var(--neon-1);
+            box-shadow: 0 0 0 5px rgba(0, 255, 102, 0.12);
+            transform: translateY(-50%);
+        }
+
+        .timeline-slide .timeline-item::after {
+            content: "";
+            position: absolute;
+            top: 1.4rem;
+            left: 0.34rem;
+            width: 1px;
+            height: 18px;
+            background: rgba(0, 255, 102, 0.45);
+            transform: translate(-50%, 0);
+        }
+
+        .timeline-slide .timeline-card {
+            width: min(100%, 260px);
+            margin-top: 0.95rem;
+            padding: 0.78rem 0.2rem 0.2rem;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .timeline-slide .timeline-year {
+            font-family: var(--font-display);
+            font-size: clamp(0.92rem, 1.08vw, 1.08rem);
+            letter-spacing: 0.04em;
+            color: var(--neon-1);
+            font-weight: 700;
+            margin-bottom: 0.32rem;
+            display: block;
+        }
+
+        .timeline-slide .timeline-desc {
+            color: var(--text-2);
+            font-size: clamp(0.8rem, 0.9vw, 0.95rem);
+            line-height: 1.4;
+        }
+
+        .timeline-slide .timeline-quote {
+            margin-top: var(--space-2);
+            text-align: center;
+            color: var(--line-strong);
+            font-size: clamp(0.85rem, 1vw, 1.02rem);
+            letter-spacing: 0.02em;
+        }
+
+        .cta-stack {
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .proof-chip {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid rgba(118, 213, 106, 0.26);
+            border-radius: var(--radius-lg);
+            padding: 0.4rem 0.8rem;
+            color: var(--text-2);
+            font: 500 clamp(0.72rem, 0.82vw, 0.92rem) / 1 var(--font-body);
+            background: rgba(6, 21, 15, 0.48);
+        }
+
+        .rise {
+            animation: riseIn 0.8s ease both;
+        }
+
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 980px) {
+            html,
+            body {
+                overflow: auto;
+            }
+
+            body {
+                display: block;
+            }
+
+            .deck-shell {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto;
+            }
+
+            .layout-hero .slide-inner,
+            .layout-metric .slide-inner,
+            .layout-media .slide-inner {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+
+            .hero-visual,
+            .media-panel {
+                justify-self: start;
+                width: min(84vw, 620px);
+            }
+
+            .deck-progress,
+            .branding {
+                font-size: 0.64rem;
+            }
+
+            .slide {
+                align-content: start;
+                padding: clamp(1rem, 5vw, 1.6rem);
+            }
+
+            .slide.single-col {
+                align-content: center;
+            }
+
+            .headline {
+                font-size: clamp(1.9rem, 8vw, 2.8rem);
+                max-width: 100%;
+            }
+
+            .subhead {
+                font-size: clamp(0.95rem, 4vw, 1.1rem);
+                max-width: 100%;
+            }
+
+            .metric {
+                font-size: clamp(2.6rem, 14vw, 4.1rem);
+            }
+
+            .top-actions {
+                right: clamp(1rem, 3vw, 1.5rem);
+                gap: 0.45rem;
+            }
+
+            .top-actions .btn-primary {
+                display: none;
+            }
+
+            .print-figure {
+                width: clamp(140px, 42vw, 220px);
+                max-height: 56vh;
+            }
+
+            .deck-progress {
+                right: 1rem;
+                bottom: 0.9rem;
+            }
+
+            .deck-nav {
+                bottom: clamp(0.8rem, 2vw, 1.2rem);
+            }
+
+            .timeline-slide .timeline-horizontal {
+                grid-template-columns: repeat(4, minmax(220px, 1fr));
+                gap: var(--space-2);
+                padding-bottom: 0.2rem;
+            }
+
+            .timeline-slide .timeline-quote {
+                text-align: center;
+            }
+
+            .slide[data-slide="13"] .reason-stack {
+                justify-content: stretch;
+            }
+
+            .slide[data-slide="13"] .reason-line {
+                width: 100%;
+                white-space: normal;
+            }
+
+            .symptom-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+
+            .symptom-grid .symptom-item:nth-child(1),
+            .symptom-grid .symptom-item:nth-child(2),
+            .symptom-grid .symptom-item:nth-child(3) {
+                grid-column: auto;
+                grid-row: auto;
+                width: 100%;
+            }
+
+            .insight-grid,
+            .insight-grid.two {
+                grid-template-columns: 1fr;
+            }
+
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .case-copy,
+            .case-proof {
+                grid-column: auto;
+            }
+
+            .case-proof-frame {
+                min-height: 210px;
+            }
+
+            .case-source {
+                justify-self: start;
+            }
+
+            .flow-chain {
+                gap: 0.45rem;
+            }
+
+            .slide[data-slide="24"] .flow-chain {
+                gap: 0.5rem;
+            }
+
+            .slide[data-slide="24"] .flow-node {
+                width: 100%;
+                text-align: center;
+                font-size: 1rem;
+            }
+
+            .slide[data-slide="24"] .flow-arrow {
+                font-size: 1.28rem;
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="deck-shell" aria-label="Apresentacao Cybersecurity Premium">
+        <!-- Camadas de atmosfera -->
+        <canvas class="layer-matrix" id="matrixCanvas" aria-hidden="true"></canvas>
+        <div class="layer-grid" aria-hidden="true"></div>
+        <div class="layer-noise" aria-hidden="true"></div>
+        <div class="layer-vignette" aria-hidden="true"></div>
+
+        <!-- Branding discreto -->
+        <div class="branding">HIVE.CONNECT</div>
+        <div class="deck-progress" id="deckProgress" aria-live="polite">01 / 35</div>
+
+        <section class="slides" id="slidesRoot">
+            <!-- 01 -->
+            <article class="slide layout-hero active" data-slide="01">
+                <div class="slide-inner">
+                    <header class="rise" style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Vulnerability as a Service</span>
+                        <h1 class="headline">A evolução do ataque é <span class="accent">sistêmica.</span><br>A defesa também precisa ser.</h1>
+
+                    </header>
+
+                    
+                </div>
+            </article>
+
+            <!-- WHOAMI -->
+            <article class="slide layout-media" data-slide="01b">
+                <div class="slide-inner" style="grid-template-columns: 1.4fr 0.6fr;">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">WHOAMI</span>
+                        <h2 class="headline" style="max-width: 22ch;">Eu construo, compito e transformo segurança em <span class="accent">prática</span></h2>
+                        <p class="subhead">Atuo com AppSec, Pentest Web/APIs e Gestão de Vulnerabilidades, conectando operação real, pesquisa prática e comunidade. Hoje trabalho na <strong style="color:var(--text-1)">CECyber</strong>, apoio a <strong style="color:var(--neon-1)">hive.connect</strong> e trago para o palco o que também testo em laboratório, desafios e projetos próprios.</p>
+                        <p class="subhead">Campeão no <strong style="color:var(--text-1)">Hacking na Web Day 2026</strong> e no <strong style="color:var(--text-1)">Hack in Cariri 2026</strong>, além de autor e campeão do <strong style="color:var(--text-1)">Article Championship April 2025</strong>.</p>
+                    </section>
+                    <aside class="media-panel" style="align-self:center; display:grid; gap: 0.8rem; justify-items: center;">
+                        <img class="duotone" src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos" style="width: 100%; max-width: 280px; border-radius: var(--radius-md); filter: grayscale(1) contrast(1.2) brightness(0.9);">
+                        <div style="text-align:center;">
+                            <p class="speaker-name">Levi Carlos</p>
+                            <p class="speaker-role">AppSec Engineer · CECyber</p>
+                        </div>
+                    </aside>
+                </div>
+            </article>
+
+            <!-- 02 -->
+            <article class="slide layout-metric" data-slide="02">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Cenário 01</span>
+                        <h2 class="headline" style="font-size: clamp(2rem, 3.9vw, 4.3rem); max-width: 16ch;">“São 22h47 de uma sexta-feira de feriado prolongado.”</h2>
+                        <p class="metric" style="font-size: clamp(2.6rem, 6vw, 5rem);">03-04-2026</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 03. Prints de grupo -->
+            <article class="slide print-slide" data-slide="03">
+                <div class="slide-inner">
+                    <figure class="print-figure">
+                        <img src="prints/smartphone/tela-1.png" alt="Print 1 do smartphone" loading="lazy" decoding="async">
+                    </figure>
+                </div>
+            </article>
+
+            <article class="slide print-slide" data-slide="04">
+                <div class="slide-inner">
+                    <figure class="print-figure">
+                        <img src="prints/smartphone/tela-2.png" alt="Print 2 do smartphone" loading="lazy" decoding="async">
+                    </figure>
+                </div>
+            </article>
+
+            <article class="slide print-slide" data-slide="05">
+                <div class="slide-inner">
+                    <figure class="print-figure">
+                        <img src="prints/smartphone/tela-3.png" alt="Print 3 do smartphone" loading="lazy" decoding="async">
+                    </figure>
+                </div>
+            </article>
+
+            <!-- 06 -->
+            <article class="slide layout-metric" data-slide="06">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Cenário 01</span>
+                        <h2 class="headline">De Quem é a Culpa?</h2>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 07 -->
+            <article class="slide layout-metric single-col" data-slide="07">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Cenário 01</span>
+                        <h2 class="headline">Por que isso aconteceu?</h2>
+                        <section class="reason-stack" aria-label="Causas descartadas do cenário">
+                            <p class="reason-line"><span class="reason-prefix">Não</span> porque o time é ruim.</p>
+                            <p class="reason-line"><span class="reason-prefix">Não</span> porque faltam ferramentas.</p>
+                            <p class="reason-line"><span class="reason-prefix">Não</span> porque falta cultura.</p>
+                        </section>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 08 -->
+            <article class="slide layout-metric" data-slide="08">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Cenário 01</span>
+                        <h2 class="headline">Mas porque a vulnerabilidade já estava lá antes.</h2>
+                        <p class="subhead">Quietinha. Invisível. Aceita. Adiada. Normalizada.</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 09 -->
+            <article class="slide layout-metric" data-slide="09">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Vulnerabilidade as a Service</span>
+                        <h2 class="headline">Um modelo informal, silencioso e contínuo de geração de risco.</h2>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 10 -->
+            <article class="slide layout-metric" data-slide="10">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Reflexão</span>
+                        <h2 class="headline">Nós montamos uma <span class="accent">máquina de produzir vulnerabilidades?</span></h2>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 11 -->
+            <article class="slide layout-metric" data-slide="11">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Tese Central</span>
+                        <h2 class="headline">A vulnerabilidade virou um serviço distribuído eficiente.</h2>
+                        <p class="subhead">Pentest e AppSec contínuo não competem, se complementam.</p>
+                    </section>
+                    <section class="cards-stack"><article class="content-card"><h3 style="color:var(--neon-1)">Pentest</h3><p>Encontra falhas profundas em contexto real</p></article><article class="content-card"><h3>AppSec Contínuo</h3><p>Reduzir recorrências e escalar prevenção.</p></article><article class="content-card"><h3>Bug Bounty</h3><p>Amplia criatividade e cobertura em produção</p></article></section>
+                </div>
+            </article>
+
+            <!-- 12 -->
+            <article class="slide layout-metric" data-slide="12">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Nascimento de uma Vulnerabilidade</span>
+                        <h2 class="headline">A maior parte das vulnerabilidades sérias não nasce de um erro isolado de código.</h2>
+                        <p class="subhead">Ela nasce da combinação de...</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 13 -->
+            <article class="slide layout-metric single-col" data-slide="13">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Nascimento de uma Vulnerabilidade</span>
+                        <h2 class="headline">Ela nasce da combinação de...</h2>
+                    </section>
+                    <section class="reason-stack" aria-label="Fatores que combinados geram vulnerabilidade">
+                        <p class="reason-line is-purple">falta de contexto</p>
+                        <p class="reason-line is-yellow">pressa</p>
+                        <p class="reason-line is-cyan">ausência de critérios</p>
+                        <p class="reason-line">segurança pode ser resolvida depois</p>
+                        <p class="reason-line is-purple">baixa integração entre áreas</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 14 -->
+            <article class="slide layout-metric timeline-slide" data-slide="14">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3); width: 100%;">
+                        <span class="tag-highlight">Linha do Tempo 2000-2026</span>
+                        <h2 class="headline">Da exploração pontual à superfície sistêmica</h2>
+                        <div class="timeline-horizontal" aria-label="Linha do tempo da superficie de ataque">
+                            <article class="timeline-item">
+                                <div class="timeline-card">
+                                    <span class="timeline-year">2000s</span>
+                                    <p class="timeline-desc">SQL Injection</p>
+                                </div>
+                            </article>
+                            <article class="timeline-item">
+                                <div class="timeline-card">
+                                    <span class="timeline-year">2010s</span>
+                                    <p class="timeline-desc">XSS, client-side, session abuse</p>
+                                </div>
+                            </article>
+                            <article class="timeline-item">
+                                <div class="timeline-card">
+                                    <span class="timeline-year">2020s</span>
+                                    <p class="timeline-desc">APIs, cloud, CI/CD, supply chain</p>
+                                </div>
+                            </article>
+                            <article class="timeline-item">
+                                <div class="timeline-card">
+                                    <span class="timeline-year">2025/2026</span>
+                                    <p class="timeline-desc">Prompt Injection, HTTP/2 desync, XS-Leaks, business logic</p>
+                                </div>
+                            </article>
+                        </div>
+                        <p class="timeline-quote">"A superfície de ataque ficou distribuída e sistêmica."</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 15 -->
+            <article class="slide single-col" data-slide="15">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Sintomas Sistêmicos</span>
+                        <h2 class="headline">A empresa aprende a <span class="accent">errar do mesmo jeito</span></h2>
+                    </section>
+                    <section class="reason-stack" style="width: min(100%, 860px);">
+                        <p class="reason-line"><span class="reason-prefix">Backlog</span> inundado de exceções permanentes de risco alto</p>
+                        <p class="reason-line is-yellow"><span class="reason-prefix">Segurança</span> atuando apenas como freio tardio</p>
+                        <p class="reason-line is-cyan"><span class="reason-prefix">Automação</span> que acelera entrega mas não bloqueia a falha severa</p>
+                    </section>
+                    <p class="kicker">A empresa treina a si mesma para continuar exposta.</p>
+                </div>
+            </article>
+
+            <article class="slide single-col" data-slide="16">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">O ciclo do risco</span>
+                        <h2 class="headline">Em um modelo disfuncional, o risco é <span class="accent">autossustentável</span></h2>
+                    </section>
+                    <section class="flow-chain" style="justify-content:center; flex-wrap:wrap;">
+                        <span class="flow-node">risco entra fácil</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">se espalha rápido</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">custa caro para sair</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">🔁</span>
+                    </section>
+                    <p class="kicker">E o ciclo se repete a cada sprint.</p>
+                </div>
+            </article>
+
+            <article class="slide layout-metric single-col" data-slide="17">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Vulnerabilidade sistêmica</span>
+                        <h2 class="headline">O risco virou <span class="accent">rotina operacional</span></h2>
+                    </section>
+                    <section class="reason-stack">
+                        <p class="reason-line"><span class="reason-prefix">01</span> segurança entra só no final</p>
+                        <p class="reason-line is-yellow"><span class="reason-prefix">02</span> exceção permanente vira arquitetura</p>
+                        <p class="reason-line is-cyan"><span class="reason-prefix">03</span> erro crítico não bloqueia release</p>
+                        <p class="reason-line is-purple"><span class="reason-prefix">04</span> prazo pesa mais que resiliência</p>
+                    </section>
+                </div>
+            </article>
+
+            <article class="slide layout-metric" data-slide="18">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Cenário 02 · API vulnerável</span>
+                        <h2 class="headline">Tudo parecia <span class="accent">certo.</span></h2>
+                    </section>
+                    <section class="reason-stack">
+                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> documentação pronta</p>
+                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> autenticação implementada</p>
+                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> integração funcionando</p>
+                        <p class="reason-line" style="border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.1);"><span class="reason-prefix" style="color: #ff5050">✗</span> autorização pensada para abuso</p>
+                    </section>
+                    <p class="kicker">O fluxo feliz passou. O ataque também.</p>
+                </div>
+            </article>
+
+            <article class="slide single-col" data-slide="19">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">BOLA · Broken Object Level Authorization</span>
+                        <h2 class="headline">Autenticar <span class="accent">≠</span> Autorizar</h2>
+                    </section>
+                    <section class="insight-grid two" style="width: min(100%, 920px);">
+                        <article class="content-card" style="font-family: 'Courier New', monospace;">
+                            <h3 style="color: var(--neon-1)">✅ Requisição legítima</h3>
+                            <p style="font-size: clamp(1rem, 1.2vw, 1.25rem); opacity: 0.95;">GET /api/orders/<strong style="color:var(--neon-1)">1001</strong></p>
+                            <p style="font-size: clamp(0.85rem, 0.95vw, 1rem); margin-top: 0.5em; color: var(--text-2);">→ Pedido do próprio usuário</p>
+                        </article>
+                        <article class="content-card" style="font-family: 'Courier New', monospace; border-color: rgba(255, 80, 80, 0.4); box-shadow: inset 0 0 0 1px rgba(255, 80, 80, 0.2);">
+                            <h3 style="color: #ff5050">❌ ID manipulado</h3>
+                            <p style="font-size: clamp(1rem, 1.2vw, 1.25rem); opacity: 0.95;">GET /api/orders/<strong style="color:#ff5050">1002</strong></p>
+                            <p style="font-size: clamp(0.85rem, 0.95vw, 1rem); margin-top: 0.5em; color: var(--text-2);">→ Dados de outro usuário retornados</p>
+                        </article>
+                    </section>
+                    <p class="kicker">Antiga. Conhecida. Devastadora. Testaram sucesso, não isolamento.</p>
+                </div>
+            </article>
+
+            <article class="slide layout-metric" data-slide="20">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Por que isso passou?</span>
+                        <h2 class="headline">Faltaram as perguntas certas <span class="accent">no momento certo</span></h2>
+                    </section>
+                    <section class="reason-stack">
+                        <p class="reason-line"><span class="reason-prefix">Design</span> requisito implícito, não explícito</p>
+                        <p class="reason-line is-yellow"><span class="reason-prefix">Teste</span> validou sucesso, não isolamento</p>
+                        <p class="reason-line is-cyan"><span class="reason-prefix">Review</span> olhou negócio, não abuso</p>
+                        <p class="reason-line is-purple"><span class="reason-prefix">Threat</span> ninguém modelou ameaça</p>
+                    </section>
+                </div>
+            </article>
+
+            <article class="slide layout-metric" data-slide="21">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Caso Real · Uber 2022</span>
+                        <h2 class="headline">Credencial comprometida <span class="accent">abriu a porta do resto</span></h2>
+                        <section class="flow-chain" aria-label="Fluxo do ataque Uber">
+                            <span class="flow-node">credencial comprometida</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">MFA fatigue</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">acesso interno</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">privilégio encontrado</span>
+                        </section>
+                    </section>
+                    <aside class="media-panel" style="align-self:center;">
+                        <figure class="case-proof-frame">
+                            <img src="prints/incident/uber.png" alt="Referência do incidente Uber" loading="lazy" decoding="async">
+                        </figure>
+                        <p class="case-caption">Vetor inicial simples, impacto ampliado</p>
+                    </aside>
+                </div>
+            </article>
+
+            <article class="slide layout-metric" data-slide="22">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Caso Real · Capital One 2019</span>
+                        <h2 class="headline">Permissão excessiva transformou <span class="accent">falha em incidente</span></h2>
+                        <section class="flow-chain" aria-label="Fluxo do ataque Capital One">
+                            <span class="flow-node">SSRF</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">acesso indevido</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">permissão excessiva</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">extração de dados</span>
+                        </section>
+                        <span class="case-impact">106 milhões de clientes afetados</span>
+                    </section>
+                    <aside class="media-panel" style="align-self:center;">
+                        <figure class="case-proof-frame">
+                            <img src="prints/incident/capital-one.png" alt="Referência do incidente Capital One" loading="lazy" decoding="async">
+                        </figure>
+                        <p class="case-caption">Configuração vulnerável + excesso de privilégio</p>
+                    </aside>
+                </div>
+            </article>
+
+            <article class="slide layout-metric" data-slide="23">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Caso Real · Equifax 2017</span>
+                        <h2 class="headline">Componente vulnerável virou <span class="accent">crise sistêmica</span></h2>
+                        <section class="flow-chain" aria-label="Fluxo do ataque Equifax">
+                            <span class="flow-node">Apache Struts vulnerável</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">patch não aplicado</span>
+                            <span class="flow-arrow">→</span>
+                            <span class="flow-node">extração massiva</span>
+                        </section>
+                        <span class="case-impact">147 milhões de pessoas afetadas</span>
+                    </section>
+                    <aside class="media-panel" style="align-self:center;">
+                        <figure class="case-proof-frame">
+                            <img src="prints/incident/equifax.png" alt="Referência do incidente Equifax" loading="lazy" decoding="async">
+                        </figure>
+                        <p class="case-caption">O incidente começou na exposição mantida</p>
+                    </aside>
+                </div>
+            </article>
+
+            <article class="slide single-col" data-slide="24">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Quando a exceção vira legado</span>
+                        <h2 class="headline">O atalho de <span class="accent">hoje</span> é o incidente de <span class="accent">amanhã</span></h2>
+                    </section>
+                    <section class="flow-chain" style="justify-content:center; flex-wrap:wrap;">
+                        <span class="flow-node">conveniência</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">improviso</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">dependência</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">vulnerabilidade</span>
+                    </section>
+                    <p class="kicker">“só por hoje”, “só nesse ambiente”, “só até subir”… dois anos depois, o segredo continua ativo.</p>
+                </div>
+            </article>
+            <article class="slide layout-metric" data-slide="25">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Velocidade do Atacante</span>
+                        <h2 class="headline" style="font-size: clamp(2rem, 3.2vw, 3.4rem);">O atacante precisa de <span class="accent">29 minutos</span></h2>
+                        <figure class="evidence-figure">
+                            <img src="prints/time/breakout-time.png" alt="Tempo de breakout reportado pela CrowdStrike" loading="lazy" decoding="async">
+                        </figure>
+                        <p class="evidence-caption">Breakout Time · CrowdStrike Global Threat Report</p>
+                    </section>
+                </div>
+            </article>
+            <article class="slide layout-metric" data-slide="26">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Velocidade da Defesa</span>
+                        <h2 class="headline" style="font-size: clamp(2rem, 3.2vw, 3.4rem);">Você demora <span class="accent">14 dias</span> para perceber</h2>
+                        <figure class="evidence-figure">
+                            <img src="prints/time/dwell-time.png" alt="Tempo de dwell time reportado pela Mandiant" loading="lazy" decoding="async">
+                        </figure>
+                        <p class="evidence-caption">Dwell Time · Mandiant M-Trends Report</p>
+                    </section>
+                </div>
+            </article>
+
+
+            <article class="slide single-col" data-slide="27">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">A Conta que Ninguém Quer Fazer</span>
+                        <p class="metric">695×</p>
+                        <h2 class="headline" style="font-size: clamp(1.6rem, 2.4vw, 2.6rem);">14 dias × 24h × 60min = 20.160 minutos<br>20.160 ÷ 29 = <span class="accent">695 oportunidades de ataque</span></h2>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 28 — Normalização do risco (FIXED) -->
+            <article class="slide layout-metric single-col" data-slide="28">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Normalização do Risco</span>
+                        <h2 class="headline">Tudo que para de assustar <span class="accent">deixa de mobilizar</span></h2>
+                    </section>
+                    <section class="reason-stack">
+                        <p class="reason-line">backlog de falhas críticas sem prazo</p>
+                        <p class="reason-line is-yellow">exceções permanentes viram arquitetura</p>
+                        <p class="reason-line is-purple">ativos sem dono em produção</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 29 — O vilão é o fluxo -->
+            <article class="slide single-col" data-slide="29">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">O fluxo é o problema</span>
+                        <h2 class="headline">Não é quem errou<br><span class="accent">É o sistema que permite</span></h2>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 30 — AppSec como engenharia (NEW) -->
+            <article class="slide layout-metric single-col" data-slide="30">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">A Saída</span>
+                        <h2 class="headline">Não seja polícia.<br><span class="accent">Seja designer de resiliência.</span></h2>
+                    </section>
+                    <section class="flow-chain" style="justify-content:center; flex-wrap:wrap;">
+                        <span class="flow-node">Blocos não negociáveis</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Shift-left pragmático</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Threat modeling por feature</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Privilégio mínimo real</span>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 31 — Pergunta final (SHORTENED) -->
+            <article class="slide single-col" data-slide="31">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">A pergunta final</span>
+                        <h2 class="headline"><span class="accent">Por design</span> ou <span class="accent">por padrão?</span></h2>
+                        <p class="subhead">Estamos reduzindo vulnerabilidades com intenção ou produzindo por inércia?</p>
+                    </section>
+                </div>
+            </article>
+
+            <!-- 32 — IA em AppSec (NEW) -->
+            <article class="slide layout-metric single-col" data-slide="32">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Nova Fronteira · IA em AppSec</span>
+                        <h2 class="headline">IA acelera entrega.<br><span class="accent">Também acelera exposição.</span></h2>
+                    </section>
+                    <section class="reason-stack">
+                        <p class="reason-line is-yellow"><span class="reason-prefix">Risco 01</span> Código gerado por IA ≠ código seguro</p>
+                        <p class="reason-line is-cyan"><span class="reason-prefix">Risco 02</span> Prompt Injection em agentes de produção</p>
+                        <p class="reason-line is-purple"><span class="reason-prefix">Risco 03</span> Excessive Agency — IA com poder sem mandato</p>
+                    </section>
+                    <p class="kicker">A barreira: Human-in-the-loop em fluxos críticos.</p>
+                </div>
+            </article>
+
+            <!-- 33 — Metáfora Matrix (NEW) -->
+            <article class="slide single-col" data-slide="33">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">A Matrix da Segurança Aparente</span>
+                        <h2 class="headline">Dashboard verde <span class="accent">≠</span> controle real</h2>
+                        <p class="subhead">Uptime belo, scanner tranquilo, painel ok. Mas o que pulsa por baixo?</p>
+                    </section>
+                    <section class="insight-grid">
+                        <article class="insight-pill">dependências que ninguém inspeciona</article>
+                        <article class="insight-pill">headers que só atacantes notam</article>
+                        <article class="insight-pill">parsers exploráveis sob HTTP/2</article>
+                    </section>
+                    <p class="kicker">O atacante vive de desmascarar as aparências do painel.</p>
+                </div>
+            </article>
+
+            <!-- 34 — Encerramento (IMPROVED) -->
+            <article class="slide layout-media" data-slide="34">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight">Encerramento</span>
+                        <h2 class="headline">O problema não começa no alerta<br>Ele só fica <span class="accent">visível</span> nele</h2>
+                        <p class="metric" style="font-size: clamp(1.6rem, 3vw, 2.8rem);">Desligue o seu Vulnerabilidade as a Service.</p>
+                    </section>
+                    <aside class="media-panel" style="align-self:center; display:grid; gap: 0.8rem; justify-items: center;">
+                        <img class="duotone" src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos" style="width: 100%; max-width: 280px; border-radius: var(--radius-md); filter: grayscale(1) contrast(1.2) brightness(0.9);">
+                        <div style="text-align:center;">
+                            <p class="speaker-name">Levi Carlos</p>
+                            <p class="speaker-role">AppSec Engineer · CECyber</p>
+                        </div>
+                    </aside>
+                </div>
+            </article>
+        </section>
+
+        <nav class="deck-nav" aria-label="Navegacao dos slides">
+            <button id="prevSlide" class="nav-btn" type="button" aria-label="Slide anterior">&#8592;</button>
+            <button id="nextSlide" class="nav-btn" type="button" aria-label="Proximo slide">&#8594;</button>
+        </nav>
+    </main>
+
+    <script>
+        // Matrix rain discreto para atmosfera digital.
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const charset = "01010110ABCDEF";
+        let drops = [];
+        let fontSize = 14;
+        let cols = 0;
+        let animTimer;
+
+        function setupMatrix() {
+            const shell = document.querySelector(".deck-shell");
+            const rect = shell.getBoundingClientRect();
+            canvas.width = Math.floor(rect.width);
+            canvas.height = Math.floor(rect.height);
+            cols = Math.floor(canvas.width / fontSize);
+            drops = Array(cols).fill(1);
+            ctx.fillStyle = "#0B0F0F";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(6, 21, 15, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00FF66";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = charset[Math.floor(Math.random() * charset.length)];
+                ctx.globalAlpha = Math.random() * 0.6 + 0.2;
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                ctx.globalAlpha = 1;
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i] += 1;
+            }
+        }
+
+        function startMatrix() {
+            if (animTimer) clearInterval(animTimer);
+            animTimer = setInterval(drawMatrix, 58);
+        }
+
+        setupMatrix();
+        startMatrix();
+        window.addEventListener("resize", setupMatrix);
+
+        // Navegacao dos slides por teclado e botoes.
+        const slides = [...document.querySelectorAll(".slide")];
+        const progress = document.getElementById("deckProgress");
+        const prevSlideBtn = document.getElementById("prevSlide");
+        const nextSlideBtn = document.getElementById("nextSlide");
+        let current = 0;
+
+        slides.forEach((slide) => {
+            const inner = slide.querySelector(".slide-inner");
+            if (inner && inner.children.length === 1) {
+                slide.classList.add("single-col");
+            }
+        });
+
+        document.querySelectorAll(".content-card").forEach((card) => {
+            const paragraphs = [...card.querySelectorAll("p")];
+            const bulletParagraphs = paragraphs.filter((p) => p.textContent.trim().startsWith("- "));
+            if (bulletParagraphs.length < 1) return;
+
+            card.classList.add("list-card");
+            bulletParagraphs.forEach((p) => {
+                p.classList.add("point-row");
+                p.textContent = p.textContent.trim().replace(/^-\s*/, "");
+            });
+
+            paragraphs
+                .filter((p) => !p.classList.contains("point-row") && p.textContent.trim().startsWith("→"))
+                .forEach((p) => p.classList.add("list-trail"));
+        });
+
+        function renderSlides() {
+            slides.forEach((slide, idx) => {
+                slide.classList.toggle("active", idx === current);
+            });
+            const currentText = String(current + 1).padStart(2, "0");
+            const totalText = String(slides.length).padStart(2, "0");
+            progress.textContent = `${currentText} / ${totalText}`;
+            prevSlideBtn.disabled = current === 0;
+            nextSlideBtn.disabled = current === slides.length - 1;
+        }
+
+        function goNextSlide() {
+            current = Math.min(current + 1, slides.length - 1);
+            renderSlides();
+        }
+
+        function goPrevSlide() {
+            current = Math.max(current - 1, 0);
+            renderSlides();
+        }
+
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight" || event.key === " " || event.key === "Enter") {
+                goNextSlide();
+            }
+
+            if (event.key === "ArrowLeft") {
+                goPrevSlide();
+            }
+
+            if (event.key === "Home") {
+                current = 0;
+                renderSlides();
+            }
+
+            if (event.key === "End") {
+                current = slides.length - 1;
+                renderSlides();
+            }
+        });
+
+        prevSlideBtn.addEventListener("click", goPrevSlide);
+        nextSlideBtn.addEventListener("click", goNextSlide);
+
+        const langButtons = [...document.querySelectorAll(".lang-btn")];
+        const i18nTargets = [...document.querySelectorAll("[data-i18n-key]")];
+        const i18n = {
+            pt: {
+                primaryCta: "Agendar diagnostico",
+                heroTag: "Vulnerabilidade as a Service",
+                heroTitle: "22h47. Sexta de feriado. <span class=\"accent\">Extracao massiva em producao.</span>",
+                heroBody: "O incidente nao comeca no alerta. Ele so fica visivel no alerta. Antes disso, o risco ja foi aceito, adiado e normalizado pelo fluxo de trabalho.",
+                heroKicker: "hive.connect keynote · 60 min · appsec + engenharia",
+                finalTag: "Fechamento",
+                finalTitle: "Vamos desligar, de uma vez, <span class=\"accent\">o servico de vulnerabilidades.</span>",
+                finalBody: "Toda empresa tem vulnerabilidade. A pergunta certa e: estamos reduzindo por design ou produzindo por padrao?",
+                finalKicker: "visibilidade clara · disciplina operacional · seguranca desde a linha zero",
+                proof1: "Entrega orientada a risco real",
+                proof2: "AppSec integrado ao produto"
+            },
+            en: {
+                primaryCta: "Book a diagnostic call",
+                heroTag: "Vulnerability as a Service",
+                heroTitle: "10:47 PM. Holiday Friday. <span class=\"accent\">Massive data extraction in production.</span>",
+                heroBody: "The incident does not start with the alert. It only becomes visible there. Before that, risk was already accepted, postponed and normalized by the delivery flow.",
+                heroKicker: "hive.connect keynote · 60 min · appsec + engineering",
+                finalTag: "Closing",
+                finalTitle: "Let us shut down, once and for all, <span class=\"accent\">the vulnerability service.</span>",
+                finalBody: "Every company has vulnerabilities. The real question is: are we reducing them by design or producing them by default?",
+                finalKicker: "clear visibility · operational discipline · security from line zero",
+                proof1: "Delivery guided by real risk",
+                proof2: "AppSec embedded in product"
+            }
+        };
+
+        function setLanguage(lang) {
+            const dictionary = i18n[lang] || i18n.pt;
+            i18nTargets.forEach((node) => {
+                const key = node.dataset.i18nKey;
+                if (dictionary[key]) node.innerHTML = dictionary[key];
+            });
+
+            langButtons.forEach((btn) => {
+                const isActive = btn.dataset.lang === lang;
+                btn.classList.toggle("active", isActive);
+                btn.setAttribute("aria-pressed", String(isActive));
+            });
+
+            document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+        }
+
+        langButtons.forEach((btn) => {
+            btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+        });
+
+        setLanguage("pt");
+        renderSlides();
+    </script>
+</body>
+</html>
