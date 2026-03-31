@@ -110,6 +110,170 @@
             pointer-events: none;
         }
 
+        /* ---------- Profile hex card (flat-top / deitado) ---------- */
+        .profile-card {
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .profile-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+        }
+
+        .profile-frame {
+            position: relative;
+            width: clamp(200px, 22vw, 300px);
+            aspect-ratio: 1.15 / 1;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1rem;
+            isolation: isolate;
+        }
+
+        .hex-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .hex-bg polygon {
+            fill: none;
+            stroke: rgba(0, 255, 102, 0.72);
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .hex-bg-1 {
+            transform: scale(1.06);
+            filter:
+                drop-shadow(0 0 10px rgba(0, 255, 102, 0.28))
+                drop-shadow(0 0 22px rgba(0, 255, 102, 0.16));
+            animation: hexPulse 3.8s ease-in-out infinite;
+        }
+
+        .hex-bg-1 polygon {
+            stroke-width: 1.8;
+        }
+
+        .hex-bg-2 {
+            transform: scale(1.18);
+            opacity: 0.42;
+            filter:
+                drop-shadow(0 0 8px rgba(0, 255, 102, 0.18))
+                drop-shadow(0 0 18px rgba(0, 255, 102, 0.12));
+            animation: hexPulseSoft 5.4s ease-in-out infinite;
+        }
+
+        .hex-bg-2 polygon {
+            stroke-width: 1.2;
+            stroke-dasharray: 8 6;
+        }
+
+        .profile-hex {
+            position: relative;
+            z-index: 2;
+            width: 92%;
+            aspect-ratio: 1.15 / 1;
+            overflow: hidden;
+            clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+            background: rgba(0, 255, 102, 0.06);
+            box-shadow:
+                0 0 0 1px rgba(0, 255, 102, 0.18),
+                0 0 24px rgba(0, 255, 102, 0.08);
+            transition:
+                transform var(--motion-fast),
+                box-shadow var(--motion-fast);
+        }
+
+        .profile-hex::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                120deg,
+                transparent 20%,
+                rgba(0, 255, 102, 0) 35%,
+                rgba(0, 255, 102, 0.35) 50%,
+                rgba(0, 255, 102, 0) 65%,
+                transparent 80%
+            );
+            transform: translateX(-120%);
+            opacity: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .profile-hex img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            filter: grayscale(1) contrast(1.2) brightness(0.9);
+            transition:
+                transform var(--motion-fast),
+                filter var(--motion-fast);
+        }
+
+        .profile-link:hover .profile-hex {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow:
+                0 0 0 1px rgba(0, 255, 102, 0.34),
+                0 0 32px rgba(0, 255, 102, 0.18),
+                0 0 64px rgba(0, 255, 102, 0.08);
+        }
+
+        .profile-link:hover .profile-hex::after {
+            opacity: 1;
+            animation: hexSweep 0.9s ease forwards;
+        }
+
+        .profile-link:hover .profile-hex img {
+            transform: scale(1.06);
+            filter: grayscale(0.15) contrast(1.15) brightness(1);
+        }
+
+        .profile-name {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 1.3vw, 1.4rem);
+            font-weight: 700;
+            color: var(--text-1);
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-role {
+            color: var(--text-2);
+            font-size: clamp(0.82rem, 0.92vw, 1rem);
+            line-height: 1.5;
+        }
+
+        @keyframes hexSweep {
+            from { transform: translateX(-120%); }
+            to   { transform: translateX(120%); }
+        }
+
+        @keyframes hexPulse {
+            0%, 100% { transform: scale(1.06); opacity: 0.65; }
+            50%      { transform: scale(1.12); opacity: 1; }
+        }
+
+        @keyframes hexPulseSoft {
+            0%, 100% { transform: scale(1.18); opacity: 0.2; }
+            50%      { transform: scale(1.24); opacity: 0.55; }
+        }
+
+        @keyframes hexRotate {
+            from { rotate: 0deg; }
+            to   { rotate: 360deg; }
+        }
+
+
         .layer-grid {
             background:
                 repeating-linear-gradient(90deg, transparent 0 52px, rgba(191, 191, 191, 0.05) 52px 53px),
@@ -1275,13 +1439,25 @@ display: flex;
                         <span class="tag-highlight">WHOAMI</span>
                         <h2 class="headline" style="max-width: 22ch;">Eu construo, compito e transformo segurança em <span class="accent">prática</span></h2>
                         <p class="subhead">Atuo com AppSec, Pentest Web/APIs e Gestão de Vulnerabilidades, conectando operação real, pesquisa prática e comunidade. Hoje trabalho na <strong style="color:var(--text-1)">CECyber</strong>, apoio a <strong style="color:var(--neon-1)">hive.connect</strong> e trago para o palco o que também testo em laboratório, desafios e projetos próprios.</p>
-                        <p class="subhead">Campeão no <strong style="color:var(--text-1)">Hacking na Web Day 2026</strong> e no <strong style="color:var(--text-1)">Hack in Cariri 2026</strong>, além de autor e campeão do <strong style="color:var(--text-1)">Article Championship April 2025</strong>.</p>
+                        <p class="subhead">Campeão no <strong style="color:var(--text-1)">Hacking na Web Day 2026</strong>, além de autor e campeão do <strong style="color:var(--text-1)">Article Championship April 2025</strong>.</p>
                     </section>
-                    <aside class="media-panel" style="align-self:center; display:grid; gap: 0.8rem; justify-items: center;">
-                        <img class="duotone" src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos" style="width: 100%; max-width: 280px; border-radius: var(--radius-md); filter: grayscale(1) contrast(1.2) brightness(0.9);">
-                        <div style="text-align:center;">
-                            <p class="speaker-name">Levi Carlos</p>
-                            <p class="speaker-role">AppSec Engineer · CECyber</p>
+                    <aside class="media-panel" style="align-self:center; display:grid; justify-items: center;">
+                        <div class="profile-card">
+                            <a href="https://www.linkedin.com/in/levicarlosz/" target="_blank" rel="noopener noreferrer" class="profile-link">
+                                <div class="profile-frame">
+                                    <svg class="hex-bg hex-bg-1" viewBox="0 0 100 100" aria-hidden="true">
+                                        <polygon points="4,50 27,9 73,9 96,50 73,91 27,91"></polygon>
+                                    </svg>
+                                    <svg class="hex-bg hex-bg-2" viewBox="0 0 100 100" aria-hidden="true">
+                                        <polygon points="4,50 27,9 73,9 96,50 73,91 27,91"></polygon>
+                                    </svg>
+                                    <div class="profile-hex">
+                                        <img src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos">
+                                    </div>
+                                </div>
+                                <p class="profile-name">Levi Carlos</p>
+                                <p class="profile-role">CTF Player and Builder · CECyber</p>
+                            </a>
                         </div>
                     </aside>
                 </div>
@@ -1334,17 +1510,28 @@ display: flex;
             </article>
 
             <!-- 07 -->
-            <article class="slide layout-metric single-col" data-slide="07">
-                <div class="slide-inner">
+            <article class="slide layout-metric" data-slide="07">
+                <div class="slide-inner" style="grid-template-columns: 1fr 1fr; align-items: center;">
                     <section style="display:grid; gap: var(--space-3);">
                         <span class="tag-highlight">Cenário 01</span>
-                        <h2 class="headline">Por que isso aconteceu?</h2>
-                        <section class="reason-stack" aria-label="Causas descartadas do cenário">
-                            <p class="reason-line"><span class="reason-prefix">Não</span> porque o time é ruim.</p>
-                            <p class="reason-line"><span class="reason-prefix">Não</span> porque faltam ferramentas.</p>
-                            <p class="reason-line"><span class="reason-prefix">Não</span> porque falta cultura.</p>
-                        </section>
+                        <h2 class="headline" style="max-width: 14ch;">Por que isso <span class="accent">aconteceu?</span></h2>
+                        <p class="subhead" style="max-width: 38ch;">Antes de procurar culpados, precisamos descartar as respostas fáceis.</p>
                     </section>
+                    <aside style="display: grid; gap: 0.9rem;" aria-label="Causas descartadas do cenário">
+                        <div style="position: relative; padding: 1rem 1.2rem; border-radius: var(--radius-md); border: 1px solid rgba(0,255,102,0.25); background: rgba(0,255,102,0.06);">
+                            <div style="position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: linear-gradient(90deg, rgba(0,255,102,0.7), rgba(0,255,102,0.2)); transform: translateY(-50%);"></div>
+                            <p style="font-family: var(--font-display); font-size: clamp(1.05rem, 1.3vw, 1.35rem); color: var(--text-2); opacity: 0.6;"><span style="color: var(--neon-1); font-weight: 700; margin-right: 0.5rem;">Não</span> porque o time é ruim.</p>
+                        </div>
+                        <div style="position: relative; padding: 1rem 1.2rem; border-radius: var(--radius-md); border: 1px solid rgba(240,190,23,0.3); background: rgba(240,190,23,0.06);">
+                            <div style="position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: linear-gradient(90deg, rgba(240,190,23,0.7), rgba(240,190,23,0.2)); transform: translateY(-50%);"></div>
+                            <p style="font-family: var(--font-display); font-size: clamp(1.05rem, 1.3vw, 1.35rem); color: var(--text-2); opacity: 0.6;"><span style="color: #f0be17; font-weight: 700; margin-right: 0.5rem;">Não</span> porque faltam ferramentas.</p>
+                        </div>
+                        <div style="position: relative; padding: 1rem 1.2rem; border-radius: var(--radius-md); border: 1px solid rgba(177,102,211,0.3); background: rgba(177,102,211,0.06);">
+                            <div style="position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: linear-gradient(90deg, rgba(177,102,211,0.7), rgba(177,102,211,0.2)); transform: translateY(-50%);"></div>
+                            <p style="font-family: var(--font-display); font-size: clamp(1.05rem, 1.3vw, 1.35rem); color: var(--text-2); opacity: 0.6;"><span style="color: #b166d3; font-weight: 700; margin-right: 0.5rem;">Não</span> porque falta cultura.</p>
+                        </div>
+                        <p class="kicker" style="text-align: left; margin-top: 0.3rem; opacity: 0.7;">Então por quê?</p>
+                    </aside>
                 </div>
             </article>
 
@@ -1507,18 +1694,44 @@ display: flex;
             </article>
 
             <article class="slide layout-metric" data-slide="18">
-                <div class="slide-inner">
+                <div class="slide-inner" style="grid-template-columns: 1.05fr 0.95fr; align-items: center;">
                     <section style="display:grid; gap: var(--space-3);">
                         <span class="tag-highlight">Cenário 02 · API vulnerável</span>
-                        <h2 class="headline">Tudo parecia <span class="accent">certo.</span></h2>
+                        <h2 class="headline" style="max-width: 16ch;">Tudo parecia <span class="accent">certo.</span></h2>
+                        <section class="reason-stack">
+                            <p class="reason-line" style="border-color: rgba(0,255,102,0.4); border-left-width: 4px;"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> documentação pronta</p>
+                            <p class="reason-line" style="border-color: rgba(0,255,102,0.4); border-left-width: 4px;"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> autenticação implementada</p>
+                            <p class="reason-line" style="border-color: rgba(0,255,102,0.4); border-left-width: 4px;"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> integração funcionando</p>
+                            <p class="reason-line" style="border-color: rgba(255,80,80,0.55); background: rgba(255,80,80,0.12); border-left-width: 4px; box-shadow: 0 0 18px rgba(255,80,80,0.08);"><span class="reason-prefix" style="color: #ff5050; border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.12);">✗</span> autorização pensada para abuso</p>
+                        </section>
+                        <p class="kicker" style="font-size: clamp(1.05rem, 1.2vw, 1.3rem);">O fluxo feliz passou. <strong style="color:#ff5050">O ataque também.</strong></p>
                     </section>
-                    <section class="reason-stack">
-                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> documentação pronta</p>
-                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> autenticação implementada</p>
-                        <p class="reason-line" style="border-color: rgba(0,255,102,0.4);"><span class="reason-prefix" style="color: var(--neon-1)">✓</span> integração funcionando</p>
-                        <p class="reason-line" style="border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.1);"><span class="reason-prefix" style="color: #ff5050">✗</span> autorização pensada para abuso</p>
-                    </section>
-                    <p class="kicker">O fluxo feliz passou. O ataque também.</p>
+                    <aside style="align-self: center;">
+                        <!-- Terminal mock mostrando o ataque -->
+                        <div style="background: rgba(0,0,0,0.88); border: 1px solid rgba(255,80,80,0.25); border-radius: var(--radius-md); overflow: hidden; font-family: 'Courier New', monospace; box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 32px rgba(255,80,80,0.06);">
+                            <div style="background: rgba(255,80,80,0.06); padding: 0.45rem 0.8rem; display: flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid rgba(255,80,80,0.12);">
+                                <span style="width:9px;height:9px;border-radius:50%;background:#ff5050;"></span>
+                                <span style="width:9px;height:9px;border-radius:50%;background:#f0be17;"></span>
+                                <span style="width:9px;height:9px;border-radius:50%;background:#00ff66;"></span>
+                                <span style="color: var(--line-strong); font-size: 0.68rem; margin-left: 0.3rem; letter-spacing: 0.06em;">attacker — exploitation</span>
+                            </div>
+                            <div style="padding: 0.85rem 1rem; display: grid; gap: 0.65rem; font-size: clamp(0.74rem, 0.88vw, 0.92rem); line-height: 1.55;">
+                                <div>
+                                    <span style="color: var(--line-strong);">$</span> <span style="color: var(--neon-1);">curl</span> -s <span style="color: #f0be17;">-H</span> <span style="color: var(--text-2);">"Auth: Bearer eyJ..."</span> \<br>
+                                    &nbsp;&nbsp;<span style="color: #ff5050;">api.target.com/v1/orders/<strong style="font-size: 1.15em;">1002</strong></span>
+                                </div>
+                                <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.55rem;">
+                                    <span style="color: #ff5050; font-weight: 700;">HTTP/1.1 200 OK</span><br>
+                                    <span style="color: var(--line-strong);">{</span><br>
+                                    &nbsp;&nbsp;<span style="color: #f0be17;">"user"</span>: <span style="color: var(--text-1);">"maria.silva"</span>,<br>
+                                    &nbsp;&nbsp;<span style="color: #f0be17;">"cpf"</span>: <span style="color: #ff5050;">"412.***.***-89"</span>,<br>
+                                    &nbsp;&nbsp;<span style="color: #f0be17;">"address"</span>: <span style="color: var(--text-1);">"Rua ██████, 142"</span><br>
+                                    <span style="color: var(--line-strong);">}</span>
+                                </div>
+                                <div style="color: var(--line-strong); font-size: 0.82em; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 0.4rem;">→ dados de <span style="color:#ff5050">outro usuário</span> retornados sem restrição</div>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </article>
 
@@ -1657,7 +1870,7 @@ display: flex;
                         <figure class="evidence-figure">
                             <img src="prints/time/breakout-time.png" alt="Tempo de breakout reportado pela CrowdStrike" loading="lazy" decoding="async">
                         </figure>
-                        <p class="evidence-caption">Breakout Time · CrowdStrike Global Threat Report</p>
+                        <a style="text-decoration: none;" href="https://www.crowdstrike.com/explore/2026-global-threat-report/2026-global-threat-report?utm_medium=org" target="_blank" rel="noopener noreferrer"><p class="evidence-caption">Breakout Time · CrowdStrike Global Threat Report</p></a>
                     </section>
                 </div>
             </article>
@@ -1669,7 +1882,8 @@ display: flex;
                         <figure class="evidence-figure">
                             <img src="prints/time/dwell-time.png" alt="Tempo de dwell time reportado pela Mandiant" loading="lazy" decoding="async">
                         </figure>
-                        <p class="evidence-caption">Dwell Time · Mandiant M-Trends Report</p>
+<a style="text-decoration: none;" href="https://www.gstatic.com/security-marketing/m-trends-2026-en.pdf" target="_blank" rel="noopener noreferrer"><p class="evidence-caption">Dwell Time · Mandiant M-Trends Report</p></a>
+                        
                     </section>
                 </div>
             </article>
@@ -1756,20 +1970,65 @@ display: flex;
                 </div>
             </article>
 
-            <!-- 33 — Metáfora Matrix (NEW) -->
-            <article class="slide single-col" data-slide="33">
+            <!-- 33a — Metáfora Matrix: O Perigo Real -->
+            <article class="slide single-col" data-slide="33a">
                 <div class="slide-inner">
                     <section style="display:grid; gap: var(--space-3);">
-                        <span class="tag-highlight">A Matrix da Segurança Aparente</span>
-                        <h2 class="headline">Dashboard verde <span class="accent">≠</span> controle real</h2>
-                        <p class="subhead">Uptime belo, scanner tranquilo, painel ok. Mas o que pulsa por baixo?</p>
+                        <span class="tag-highlight" style="background: #ff2020; color: #fff;">Metáfora Matrix</span>
+                        <h2 class="headline" style="max-width: 26ch;">O perigo real <span class="accent">não são os agentes</span></h2>
+                        <p class="subhead" style="max-width: 52ch;">É viver dentro de um sistema que você não enxerga por completo.</p>
                     </section>
-                    <section class="insight-grid">
-                        <article class="insight-pill">dependências que ninguém inspeciona</article>
-                        <article class="insight-pill">headers que só atacantes notam</article>
-                        <article class="insight-pill">parsers exploráveis sob HTTP/2</article>
+                    <section class="reason-stack" style="width: min(100%, 860px);">
+                        <p class="reason-line"><span class="reason-prefix">Aparência</span> painéis funcionando, serviços no ar, processos organizados</p>
+                        <p class="reason-line is-yellow"><span class="reason-prefix">Realidade</span> aparência de normalidade ≠ visão real do ambiente</p>
                     </section>
-                    <p class="kicker">O atacante vive de desmascarar as aparências do painel.</p>
+                    <p class="kicker" style="font-style:italic; opacity:0.85;">Existe uma diferença brutal entre <strong style="color:var(--neon-1)">estar dentro do sistema</strong> e <strong style="color:var(--neon-1)">entender como o sistema funciona</strong>.</p>
+                </div>
+            </article>
+
+            <!-- 33b — Metáfora Matrix: A Ilusão vs A Realidade -->
+            <article class="slide single-col" data-slide="33b">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight" style="background: #ff2020; color: #fff;">A Matrix Corporativa</span>
+                        <h2 class="headline" style="max-width: 28ch;">Dashboard verde <span class="accent">≠</span> controle real</h2>
+                    </section>
+                    <section class="insight-grid two" style="width: min(100%, 960px);">
+                        <article class="content-card" style="border-color: rgba(0,255,102,0.35);">
+                            <h3 style="color: var(--neon-1); margin-bottom: 0.8em;">🟢 O que a empresa enxerga</h3>
+                            <div style="display:grid; gap: 0.5rem;">
+                                <p class="reason-line" style="border-color: rgba(0,255,102,0.3); background: rgba(0,255,102,0.06);">camada visível sob controle</p>
+                                <p class="reason-line" style="border-color: rgba(0,255,102,0.3); background: rgba(0,255,102,0.06);">sinais superficiais de estabilidade</p>
+                                <p class="reason-line" style="border-color: rgba(0,255,102,0.3); background: rgba(0,255,102,0.06);">ausência de incidente = segurança</p>
+                            </div>
+                        </article>
+                        <article class="content-card" style="border-color: rgba(255,80,80,0.45); box-shadow: inset 0 0 0 1px rgba(255,80,80,0.15);">
+                            <h3 style="color: #ff5050; margin-bottom: 0.8em;">🔴 O que realmente existe</h3>
+                            <div style="display:grid; gap: 0.5rem;">
+                                <p class="reason-line" style="border-color: rgba(255,80,80,0.35); background: rgba(255,80,80,0.08);">conexões que ninguém mapeou</p>
+                                <p class="reason-line" style="border-color: rgba(255,80,80,0.35); background: rgba(255,80,80,0.08);">permissões que ninguém revisou</p>
+                                <p class="reason-line" style="border-color: rgba(255,80,80,0.35); background: rgba(255,80,80,0.08);">segredos esquecidos, dependências vulneráveis</p>
+                            </div>
+                        </article>
+                    </section>
+                    <p class="kicker">O ataque nunca acontece no dashboard. Acontece no que ninguém mapeou.</p>
+                </div>
+            </article>
+
+            <!-- 33c — Metáfora Matrix: Ver o Sistema Como Ele É -->
+            <article class="slide single-col" data-slide="33c">
+                <div class="slide-inner">
+                    <section style="display:grid; gap: var(--space-3);">
+                        <span class="tag-highlight" style="background: #ff2020; color: #fff;">Sair da Matrix</span>
+                        <h2 class="headline" style="max-width: 28ch;">Segurança madura é <span class="accent">ver o sistema como ele realmente é</span></h2>
+                    </section>
+                    <section class="reason-stack" style="width: min(100%, 860px);">
+                        <p class="reason-line"><span class="reason-prefix">Não é</span> só ter ferramenta</p>
+                        <p class="reason-line is-yellow"><span class="reason-prefix">Não é</span> só ter processo</p>
+                        <p class="reason-line is-cyan"><span class="reason-prefix">Não é</span> só ter monitor bonito</p>
+                        <p class="reason-line is-purple"><span class="reason-prefix">É</span> enxergar a realidade operacional por trás da aparência</p>
+                    </section>
+                    <p class="kicker" style="max-width: 58ch;">Se a empresa só vê o que é confortável, ela reage tarde. O papel do <strong style="color:var(--neon-1)">profissional de segurança</strong> é ajudar as organizações a saírem da Matrix.</p>
                 </div>
             </article>
 
@@ -1781,11 +2040,23 @@ display: flex;
                         <h2 class="headline">O problema não começa no alerta<br>Ele só fica <span class="accent">visível</span> nele</h2>
                         <p class="metric" style="font-size: clamp(1.6rem, 3vw, 2.8rem);">Desligue o seu Vulnerabilidade as a Service.</p>
                     </section>
-                    <aside class="media-panel" style="align-self:center; display:grid; gap: 0.8rem; justify-items: center;">
-                        <img class="duotone" src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos" style="width: 100%; max-width: 280px; border-radius: var(--radius-md); filter: grayscale(1) contrast(1.2) brightness(0.9);">
-                        <div style="text-align:center;">
-                            <p class="speaker-name">Levi Carlos</p>
-                            <p class="speaker-role">AppSec Engineer · CECyber</p>
+                    <aside class="media-panel" style="align-self:center; display:grid; justify-items: center;">
+                        <div class="profile-card">
+                            <a href="https://www.linkedin.com/in/levicarlosz/" target="_blank" rel="noopener noreferrer" class="profile-link">
+                                <div class="profile-frame">
+                                    <svg class="hex-bg hex-bg-1" viewBox="0 0 100 100" aria-hidden="true">
+                                        <polygon points="4,50 27,9 73,9 96,50 73,91 27,91"></polygon>
+                                    </svg>
+                                    <svg class="hex-bg hex-bg-2" viewBox="0 0 100 100" aria-hidden="true">
+                                        <polygon points="4,50 27,9 73,9 96,50 73,91 27,91"></polygon>
+                                    </svg>
+                                    <div class="profile-hex">
+                                        <img src="prints/profile.png" loading="lazy" decoding="async" alt="Levi Carlos">
+                                    </div>
+                                </div>
+                                <p class="profile-name">Levi Carlos</p>
+                                <p class="profile-role">CTF Player and Builder · CECyber</p>
+                            </a>
                         </div>
                     </aside>
                 </div>
